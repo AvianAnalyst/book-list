@@ -14,4 +14,7 @@ def search(query: str) -> str:
 
 
 def parse(raw_book_json: str) -> List[dict]:
-    return json.loads(raw_book_json)['items']
+    list_of_volume_info = [item['volumeInfo'] for item in json.loads(raw_book_json)['items']]
+    return [{field: value for field, value in book.items() if field in ['title', 'authors', 'publisher']} for book in list_of_volume_info]
+
+
