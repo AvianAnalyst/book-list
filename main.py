@@ -9,10 +9,9 @@ SECRET = os.getenv('KEY')
 
 
 def search(query: str) -> str:
-    # TODO: obey the testing goat, but when im there use maxResults parameter to limit results
-    response = requests.get('https://www.googleapis.com/books/v1/volumes', {'q': query, 'key': SECRET})
+    response = requests.get('https://www.googleapis.com/books/v1/volumes', {'q': query, 'maxResults': 5, 'key': SECRET})
     return response.text
 
 
-def parse(param: str) -> List[dict]:
-    return json.loads(param)['items']
+def parse(raw_book_json: str) -> List[dict]:
+    return json.loads(raw_book_json)['items']
