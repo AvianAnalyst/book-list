@@ -9,12 +9,18 @@ SECRET = os.getenv('KEY')
 
 
 def search(query: str) -> str:
-    response = requests.get('https://www.googleapis.com/books/v1/volumes', {'q': query, 'maxResults': 5, 'key': SECRET})
+    response = requests.get('https://www.googleapis.com/books/v1/volumes',
+                            {'q': query, 'maxResults': 5, 'key': SECRET})
     return response.text
 
 
 def parse(raw_book_json: str) -> List[dict]:
     list_of_volume_info = [item['volumeInfo'] for item in json.loads(raw_book_json)['items']]
-    return [{field: value for field, value in book.items() if field in ['title', 'authors', 'publisher']} for book in list_of_volume_info]
-
-
+    return [
+        {
+            field: value
+            for field, value in book.items()
+            if field in ['title', 'authors', 'publisher']
+        }
+        for book in list_of_volume_info
+    ]
