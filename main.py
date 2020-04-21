@@ -14,7 +14,8 @@ def search(query: str) -> str:
     return response.text
 
 
-def parse(raw_book_json: str) -> List[dict]:
+def gather(query: str) -> List[dict]:
+    raw_book_json = search(query)
     list_of_volume_info = [item['volumeInfo'] for item in json.loads(raw_book_json)['items']]
     return [
         {
@@ -24,3 +25,6 @@ def parse(raw_book_json: str) -> List[dict]:
         }
         for book in list_of_volume_info
     ]
+
+
+
