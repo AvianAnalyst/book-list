@@ -1,4 +1,4 @@
-from main import BookList
+from BookList import BookList
 from pytest import fixture
 import tabulate
 import os
@@ -7,9 +7,9 @@ import os
 @fixture(autouse=True)
 def ensure_file_removal(monkeypatch):
     monkeypatch.setenv('BOOKLIST_DEBUGGING', 'True')
-    os.system('rm -f test.txt')
+    os.system('rm -f test_save.txt')
     yield
-    os.system('rm -f test.txt')
+    os.system('rm -f test_save.txt')
     monkeypatch.delenv('BOOKLIST_DEBUGGING')
 
 
