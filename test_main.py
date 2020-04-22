@@ -1,12 +1,6 @@
 from main import BookList
 
 
-def test_search_gets_valid_response_with_multiple_books():
-    books = BookList()
-    response: str = books._search('book title')
-    assert '"items": [' in response
-
-
 def test_gather_returns_no_more_than_5_items():
     books = BookList()
     books.gather('t')

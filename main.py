@@ -13,13 +13,10 @@ class BookList:
         self.SECRET: str = os.getenv('KEY')
         self.search_results: Union[None, List[Book]] = None
 
-    def _search(self, query: str) -> str:
+    def gather(self, query: str) -> None:
         response: requests.Response = requests.get('https://www.googleapis.com/books/v1/volumes',
                                                    {'q': query, 'maxResults': 5, 'key': self.SECRET})
-        return response.text
-
-    def gather(self, query: str) -> None:
-        raw_book_json: str = self._search(query)
+        raw_book_json: str = response.text
         books: List[Book] = [item['volumeInfo'] for item in json.loads(raw_book_json)['items']]
         self.search_results = [
             {
