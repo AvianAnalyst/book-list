@@ -3,7 +3,7 @@ from main import BookList
 
 def test_search_gets_valid_response_with_multiple_books():
     books = BookList()
-    response = books._search('book title')
+    response: str = books._search('book title')
     assert '"items": [' in response
 
 
