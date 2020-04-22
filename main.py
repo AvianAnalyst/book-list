@@ -1,9 +1,9 @@
 import tabulate
-from dotenv import load_dotenv
-from typing import List, Union, Dict
-import os
 import requests
 import json
+import os
+from dotenv import load_dotenv
+from typing import List, Union, Dict
 
 Book: type = Dict[str, Union[str, List[str]]]
 
@@ -12,8 +12,13 @@ class BookList:
     def __init__(self) -> None:
         load_dotenv()
         self.SECRET: str = os.getenv('KEY')
+
+        if os.getenv('BOOKLIST_DEBUGGING'):
+            self.filename = 'test_save.txt'
+        else:
+            self.filename = '.reading_list.txt'
         self.search_results: Union[None, List[Book]] = None
-        self.list: List[Book] = []
+        self.list: List[Book] = self.load()
 
     def gather(self, query: str) -> None:
         response: requests.Response = requests.get('https://www.googleapis.com/books/v1/volumes',
@@ -37,3 +42,14 @@ class BookList:
             return "Your list is empty!"
         else:
             return tabulate.tabulate(self.list, headers='keys')
+
+    def save(self):
+        with open(self.filename, 'w') as saved_list:
+            json.dump(self.list, saved_list)
+
+    def load(self) -> List[Book]:
+        try:
+            with open(self.filename, 'r') as saved_list:
+                return json.load(saved_list)
+        except FileNotFoundError:
+            return []
