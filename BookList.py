@@ -2,16 +2,15 @@ import tabulate
 import requests
 import json
 import os
-from dotenv import load_dotenv
 from typing import List, Union, Dict
 
 Book: type = Dict[str, Union[str, List[str]]]
 
 
 class BookList:
-    def __init__(self) -> None:
-        load_dotenv()
-        self.SECRET: str = os.getenv('KEY')
+    def __init__(self, key: str) -> None:
+
+        self.SECRET: str = key
 
         if os.getenv('BOOKLIST_DEBUGGING'):
             self.filename = 'test_save.txt'
@@ -34,8 +33,11 @@ class BookList:
             for book in books
         ]
 
+    def display_search_results(self):
+        return tabulate.tabulate(self.search_results, headers='keys', showindex=True)
+
     def add(self, index: int) -> None:
-        self.list.append(self.search_results[index - 1])
+        self.list.append(self.search_results[index])
 
     def view(self):
         if not self.list:
