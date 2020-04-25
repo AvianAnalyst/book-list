@@ -2,7 +2,7 @@ import tabulate
 import requests
 import json
 import os
-from typing import List, Union, Dict
+from typing import List, Union, Dict, Optional
 
 Book: type = Dict[str, Union[str, List[str]]]
 
@@ -16,7 +16,7 @@ class BookList:
             self.filename = 'test_save.txt'
         else:
             self.filename = '.reading_list.txt'
-        self.search_results: Union[None, List[Book]] = None
+        self.search_results: List[Book] = []
         self.list: List[Book] = self.load()
 
     def gather(self, query: str) -> None:
@@ -36,16 +36,19 @@ class BookList:
     def display_search_results(self):
         return tabulate.tabulate(self.search_results, headers='keys', showindex=True)
 
-    def add(self, index: int) -> None:
-        self.list.append(self.search_results[index])
+    def add(self, index: int) -> Optional[str]:
+        try:
+            self.list.append(self.search_results[index])
+        except IndexError:
+            return "That number was out of range!"
 
-    def view(self):
+    def view(self) -> str:
         if not self.list:
             return "Your list is empty!"
         else:
             return tabulate.tabulate(self.list, headers='keys')
 
-    def save(self):
+    def save(self) -> None:
         with open(self.filename, 'w') as saved_list:
             json.dump(self.list, saved_list)
 
