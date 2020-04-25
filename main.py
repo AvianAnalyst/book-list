@@ -48,9 +48,17 @@ class Main:
         return False
 
     def add(self):
-        index = int(input('Which did you want to add? [0-4]\n> '))
-        self.list.add(index)
-        print('Done!')
+        while True:
+            try:
+                index = int(input('Which did you want to add? [0-4]\n> '))
+                break
+            except ValueError:
+                print("That wasn't a number, please try again!")
+        err = self.list.add(index)
+        if err:
+            print(err)
+        else:
+            print('Done!')
         return False
 
     def main(self):
