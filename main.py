@@ -54,11 +54,11 @@ class Main:
         return False
 
     def main(self):
-        done = false
+        done = False
         while not done:
             try:
                 done = self.cmds[self.get_cmd()]()
-            except keyerror:
+            except KeyError:
                 print("i didn't recognize that, please try again!\n\n")
 
 
